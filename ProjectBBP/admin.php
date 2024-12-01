@@ -1,66 +1,50 @@
 <?php
-require 'config.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['delete'])) {
-        $id = (int)$_POST['id'];
-        $mysqli->query("DELETE FROM antrian WHERE id = $id");
-    } elseif (isset($_POST['update'])) {
-        $id = (int)$_POST['id'];
-        $content = $mysqli->real_escape_string($_POST['content']);
-        $mysqli->query("UPDATE antrian SET content = '$content' WHERE id = $id");
-    } elseif (isset($_POST['approve'])) {
-        $id = (int)$_POST['id'];
-        $mysqli->query("UPDATE antrian SET status = 'approved' WHERE id = $id");
-    }
-}
-
-$hasil = $mysqli -> query("SELECT * FROM antrian");
+    require 'functions.php';
+    $data = query("SELECT * FROM resiko");
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <link rel="stylesheet" href="resources/adminstyle.css">
 </head>
 <body>
     <h1>Selamat Datang Admin</h1>
-
-    <h2>All Entries</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Content</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <?php while ($row = $hasil->fetch_assoc()): ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= $row['content'] ?></td>
-                <td><?= $row['status'] ?></td>
-                <td>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                        <textarea name="content"><?= $row['content'] ?></textarea>
-                        <button type="submit" name="update">Update</button>
-                    </form>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                        <button type="submit" name="approve">Approve</button>
-                    </form>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                        <button type="submit" name="delete">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-
-
-    <a href="index.php">Logout</a>
+    <div class="link-container">
+        <a href="tambah-a.php">Tambah</a>
+        <a href="hapus.php">Hapus</a>
+        <a href="edit.php">Update</a>
+        <a href="index.php">Logout</a>
+    </div>
+    <h2>Tabel Manajemen Resiko</h2>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Resiko</th>
+                    <th>Divisi</th>
+                    <th>Tingkat Resiko</th>
+                    <th>Penyebab Resiko</th>
+                    <th>Sumber Resiko</th>
+                    <th>Mitigasi</th>
+                    <th>Solusi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $i = 1?>
+                <?php foreach($data as $dat):?>
+                    <td><?= $i; ?></td>
+                    <td><?= $dat["resiko"]?></td>
+                    <td><?= $dat["divisi"]?></td>
+                    <td><?= $dat["tingkat"]?></td>
+                    <td><?= $dat["penyebab"]?></td>
+                    <td><?= $dat["sumber"]?></td>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </section>
 </body>
 </html>

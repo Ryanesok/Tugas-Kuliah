@@ -34,14 +34,18 @@
                 </tr>
             </thead>
             <tbody>
+                
                 <?php $i = 1?>
                 <?php foreach($data as $dat):?>
-                    <td><?= $i; ?></td>
-                    <td><?= $dat["resiko"]?></td>
-                    <td><?= $dat["divisi"]?></td>
-                    <td><?= $dat["tingkat"]?></td>
-                    <td><?= $dat["penyebab"]?></td>
-                    <td><?= $dat["sumber"]?></td>
+                    <tr>
+                        <td><?= $i; ?></td>
+                        <td><?= $dat["resiko"]?></td>
+                        <td><?= $dat["divisi"]?></td>
+                        <td><?= $dat["tingkat"]?></td>
+                        <td><?= $dat["penyebab"]?></td>
+                        <td><?= $dat["sumber"]?></td>
+                        <?php $i++;?>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>

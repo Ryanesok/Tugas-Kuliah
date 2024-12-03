@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require '../resources/functions.php';
     $data = query("SELECT * FROM resiko");
 ?>
 <!DOCTYPE html>
@@ -8,15 +8,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
-    <link rel="stylesheet" href="resources/adminstyle.css">
+    <link rel="stylesheet" type="text/css" href="../resources/adminstyle.css">
 </head>
 <body>
-    <h1>Selamat Datang Admin</h1>
+    <h1>Selamat Datang Admin!</h1>
     <div class="link-container">
         <a href="tambah-a.php">Tambah</a>
         <a href="hapus.php">Hapus</a>
         <a href="edit.php">Update</a>
-        <a href="index.php">Logout</a>
+        <a href="../index.php">Logout</a>
     </div>
     <h2>Tabel Manajemen Resiko</h2>
     <section>
@@ -34,7 +34,6 @@
                 </tr>
             </thead>
             <tbody>
-                
                 <?php $i = 1?>
                 <?php foreach($data as $dat):?>
                     <tr>
@@ -44,6 +43,7 @@
                         <td><?= $dat["tingkat"]?></td>
                         <td><?= $dat["penyebab"]?></td>
                         <td><?= $dat["sumber"]?></td>
+
                         <?php $i++;?>
                     </tr>
                 <?php endforeach; ?>

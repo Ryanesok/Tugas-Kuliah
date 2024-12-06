@@ -32,13 +32,13 @@
 
     function tambah($dataPost){
         global $conn;
-        $resiko = $dataPost["resiko"];
-        $divisi = $dataPost["divisi"];
-        $tingkat_resiko = $dataPost["tingkat"];
-        $penyebab = $dataPost["penyebab"];
-        $sumber  = $dataPost["sumber"];
-        $mitigasi = $dataPost["mitigasi"];
-        $solusi = $dataPost["solusi"];
+        $resiko = htmlspecialchars($dataPost["resiko"]);
+        $divisi = htmlspecialchars($dataPost["divisi"]);
+        $tingkat_resiko = htmlspecialchars($dataPost["tingkat"]);
+        $penyebab = htmlspecialchars($dataPost["penyebab"]);
+        $sumber  = htmlspecialchars($dataPost["sumber"]);
+        $mitigasi = htmlspecialchars($dataPost["mitigasi"]);
+        $solusi = htmlspecialchars($dataPost["solusi"]);
 
         $query = "INSERT INTO resiko
                 VALUES
@@ -47,6 +47,20 @@
         mysqli_query($conn, $query);
         return mysqli_affected_rows($conn);
     }
+
+    function tambahmitigasi($dataPost){
+        global $conn;
+        $resiko_id = htmlspecialchars($dataPost['id']);
+        $mitigasi = htmlspecialchars($dataPost['mitigasi']);
+        $solusi = htmlspecialchars($dataPost['solusi']);
+
+        $query = "INSERT INTO mitigasi (resiko_id, mitigasi, solusi)
+                VALUES 
+                ('$resiko_id', '$mitigasi', '$solusi')";
+        
+        mysqli_query($conn, $query);
+        return mysqli_affected_rows($conn);
+    } 
 
     function handleLogin(){
         if(isset($_POST["login"])) {
@@ -88,9 +102,42 @@
 
     function hapus($id){
         global $conn;
-        $query = "DELETE FROM resiko WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+        // Hapus data dari tabel mitigasi
+        $queryMitigasi = "DELETE FROM mitigasi WHERE resiko_id = ?";
+        $stmtMitigasi = $conn->prepare($queryMitigasi);
+        $stmtMitigasi->bind_param("i", $id);
+        $stmtMitigasi->execute();
+        
+        // Hapus data dari tabel resiko
+        $queryResiko = "DELETE FROM resiko WHERE id = ?";
+        $stmtResiko = $conn->prepare($queryResiko);
+        $stmtResiko->bind_param("i", $id);
+        return $stmtResiko->execute();
+    }
+
+    function update($datapost){
+        global $conn;
+        $id = htmlspecialchars($datapost['id']); 
+        $resiko = htmlspecialchars($datapost["resiko"]);
+        $divisi = htmlspecialchars($datapost["divisi"]);
+        $tingkat_resiko = htmlspecialchars($datapost["tingkat"]);
+        $penyebab = htmlspecialchars($datapost["penyebab"]);
+        $sumber  = htmlspecialchars($datapost["sumber"]);
+        $mitigasi = htmlspecialchars($datapost["mitigasi"]);
+        $solusi = htmlspecialchars($datapost["solusi"]);
+        
+        $query = "UPDATE resiko SET
+                resiko = '$resiko',
+                divisi = '$divisi',
+                tingkat = '$tingkat_resiko',
+                penyebab = '$penyebab',
+                sumber = '$sumber',
+                mitigasi = '$mitigasi',
+                solusi = '$solusi'
+                WHERE id = '$id'";
+
+        mysqli_query($conn, $query);
+        return mysqli_affected_rows($conn);
+
     }
 ?>

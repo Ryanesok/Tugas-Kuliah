@@ -43,7 +43,18 @@
                         <td><?= $dat["tingkat"]?></td>
                         <td><?= $dat["penyebab"]?></td>
                         <td><?= $dat["sumber"]?></td>
-
+                        <td>
+                            <?php 
+                                $mitigasiData = query("SELECT * FROM mitigasi WHERE resiko_id = ". $dat['id']);
+                                foreach($mitigasiData as $mit):?>
+                                <li><?= $mit['mitigasi']?></li>
+                            <?php endforeach;?>
+                        </td>
+                        <td>
+                        <?php foreach($mitigasiData as $mit):?>
+                                <li><?= $mit['solusi']?></li>
+                            <?php endforeach;?>
+                        </td>
                         <?php $i++;?>
                     </tr>
                 <?php endforeach; ?>

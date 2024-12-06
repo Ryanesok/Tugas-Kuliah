@@ -1,16 +1,6 @@
 <?php
-    if(isset($_POST["login"])) {
-        //cek username dan password
-        if($_POST["username"] == "admin" && $_POST["password"] == "123") {
-            header("Location: admin.php");
-            exit;
-        } elseif ($_POST["username"] == "user" && $_POST["password"] == "456") {
-            header("Location: user.php");
-        } 
-        else {
-            echo "Username tidak ditemukan!";
-        }
-    }
+    require 'resources/functions.php';
+    handleLogin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,37 +8,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Risiko Mitigasi</title>
-    <style>
-        h1{
-            text-align: center;
-            background-color: aquamarine;
-            border: 50px;
-            color: black;
-        }
-        a {
-            background-color: antiquewhite;
-            color: black;
-        }
-    </style>
+    <link rel="stylesheet" href="resources/index.css">
 </head>
 <body>
     <h1>Aplikasi Manajemen Risiko</h1>
-    <form action="" method="post">
-        <ul>
-            <li>
-                <label for="username">Username: </label>
-                <input type="text" name="username" id="username">
-            </li>
-            <li>
-                <label for="password">Password: </label>
-                <input type="password" name="password" id="password">
-            </li>
-            <li>
-                <button type="submit" name="login">login</button>
-            </li>
+    <div class="form-container">
+        <form action="" method="post">
+            <div class="inputs">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" placeholder="Masukkan username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Masukkan password" required>
+            </div>
             
-        </ul>
-    </form>
-    
+            <div class="login-button">
+                <button type="submit" name="login">Login</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

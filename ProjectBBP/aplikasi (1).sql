@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 07:53 AM
+-- Generation Time: Dec 06, 2024 at 07:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mitigasi`
+--
+
+CREATE TABLE `mitigasi` (
+  `id` int(11) NOT NULL,
+  `resiko_id` int(11) NOT NULL,
+  `mitigasi` text NOT NULL,
+  `solusi` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `mitigasi`
+--
+
+INSERT INTO `mitigasi` (`id`, `resiko_id`, `mitigasi`, `solusi`) VALUES
+(6, 20, 'Perkuat Iman', 'banyakin kajian'),
+(7, 20, 'Tingkatkan keamanan', 'Butuh anggaran');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `resiko`
 --
 
@@ -39,8 +60,22 @@ CREATE TABLE `resiko` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `resiko`
+--
+
+INSERT INTO `resiko` (`id`, `resiko`, `divisi`, `tingkat`, `penyebab`, `sumber`, `mitigasi`, `solusi`) VALUES
+(20, 'Keamanan data', 'Keuangan', 'Tinggi', 'Murtad', 'Internal', '', '');
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `mitigasi`
+--
+ALTER TABLE `mitigasi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `resiko_id` (`resiko_id`);
 
 --
 -- Indexes for table `resiko`
@@ -53,10 +88,26 @@ ALTER TABLE `resiko`
 --
 
 --
+-- AUTO_INCREMENT for table `mitigasi`
+--
+ALTER TABLE `mitigasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `resiko`
 --
 ALTER TABLE `resiko`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `mitigasi`
+--
+ALTER TABLE `mitigasi`
+  ADD CONSTRAINT `mitigasi_ibfk_1` FOREIGN KEY (`resiko_id`) REFERENCES `resiko` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

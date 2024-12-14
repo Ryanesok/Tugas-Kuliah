@@ -125,19 +125,46 @@
         $sumber  = htmlspecialchars($datapost["sumber"]);
         $mitigasi = htmlspecialchars($datapost["mitigasi"]);
         $solusi = htmlspecialchars($datapost["solusi"]);
-        
-        $query = "UPDATE resiko SET
+
+        // Mulai transaksi
+    mysqli_begin_transaction($conn);
+    try {
+        // Update tabel resiko
+        $queryResiko = "UPDATE resiko SET
                 resiko = '$resiko',
                 divisi = '$divisi',
                 tingkat = '$tingkat_resiko',
                 penyebab = '$penyebab',
-                sumber = '$sumber',
-                mitigasi = '$mitigasi',
-                solusi = '$solusi'
+                sumber = '$sumber'
                 WHERE id = '$id'";
 
-        mysqli_query($conn, $query);
-        return mysqli_affected_rows($conn);
+        if (!mysqli_query($conn, $queryResiko)) {
+            throw new Exception("Error Update Resiko: " . mysqli_error($conn));
+        }
 
+        // Update tabel mitigasi
+        $mitigasiArray = isset($datapost["mitigasi"]) ? $datapost["mitigasi"] : [];
+        $solusiArray = isset($datapost["solusi"]) ? $datapost["solusi"] : [];
+
+        foreach ($mitigasiArray as $index => $mitigasi) {
+            $solusi = isset($solusiArray[$index]) ? $solusiArray[$index] : '';
+            $queryMitigasi = "UPDATE mitigasi SET
+                            mitigasi = '$mitigasi',
+                            solusi = '$solusi'
+                            WHERE resiko_id = '$id' AND id = '$index'";
+            if (!mysqli_query($conn, $queryMitigasi)) {
+                throw new Exception("Error Update Mitigasi: " . mysqli_error($conn));
+            }
+        }
+
+        // Commit transaksi
+        mysqli_commit($conn);
+        return true;
+    } catch (Exception $e) {
+        // Rollback jika ada kesalahan
+        mysqli_rollback($conn);
+        echo $e->getMessage();
+        return false;
     }
+}
 ?>

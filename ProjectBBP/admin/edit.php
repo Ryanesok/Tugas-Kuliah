@@ -86,27 +86,17 @@
                                 <?php endforeach;?>
                             </select>
                         </td>
-                            <ul>
                             <?php
                                 $mitigasiData = query("SELECT * FROM mitigasi WHERE resiko_id = ". $dat['id']);
                                 foreach($mitigasiData as $mit):
                             ?>
                                 <td>
-                                    <li>
-                                        <input type="text" name="mitigasi" value="<?= $mit["mitigasi"];?>">
-                                    </li>
+                                    <input type="text" name="mitigasi" value="<?= $mit["mitigasi"];?>">
                                 </td>
-                            <?php endforeach; ?>
-                            </ul>
-                            <ul>
-                            <?php foreach($mitigasiData as $mit):?>
                                 <td>
-                                    <li>    
-                                        <input type="text" name="solusi" value="<?= $mit["solusi"];?>">
-                                    </li>
+                                    <input type="text" name="solusi" value="<?= $mit["solusi"];?>">
                                 </td>
                             <?php endforeach; ?>
-                            </ul>
                         <input type="hidden" name="id" value="<?= $dat['id'];?>">  
                         <?php $i++;?>
                     </tr>

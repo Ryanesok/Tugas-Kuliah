@@ -49,21 +49,20 @@
                         <td><?= $dat['resiko'];?></td>
                         <td><?= $dat['tingkat'];?></td>
                         <td>
-                            <ul>
-                                <?php
-                                    $mitigasiData = query("SELECT * FROM mitigasi WHERE resiko_id = ". $dat['id']);
-                                    foreach($mitigasiData as $mit):
-                                ?>
-                                <li><?= $mit['mitigasi'] ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </td>
-                        <td>
-                            <?php foreach($mitigasiData as $mit): ?>
-                                <li><?= $mit['solusi']?></li>
+                            <?php
+                                $mitigasiData = query("SELECT * FROM mitigasi WHERE resiko_id = ". $dat['id']);
+                                foreach($mitigasiData as $mit):
+                            ?>
+                            <?= $mit['mitigasi'] ?>
                             <?php endforeach; ?>
                         </td>
                         <td>
+                            <?php foreach($mitigasiData as $mit): ?>
+                            <?= $mit['solusi']?>
+                            <?php endforeach; ?>
+                        </td>
+                        <td>
+                            <?php if(empty($mitigasiData)): ?>
                             <form action="" method="post">
                                 <input type="hidden" name="id" value="<?= $dat['id'];?>">
                                 <label for="mitigasi"></label>
@@ -72,6 +71,7 @@
                                 <input type="text" id="solusi" name="solusi" placeholder="tambahkan solusi..." required>
                                 <button type="submit" name="tambah-m">Tambah</button>
                             </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     

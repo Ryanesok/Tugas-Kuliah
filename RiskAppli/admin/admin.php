@@ -79,7 +79,7 @@ if(isset($_POST['submit'])) {
     $id = $_GET['id'];
     $status = $_POST['status'];
     $db->approval($id, $status);
-    header('Location: admin.php');
+    echo "<script>alert('Masalah ini telah di terima!'); document.location.href = 'admin.php'</script>";
     exit;
 }
 ?>

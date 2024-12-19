@@ -42,7 +42,7 @@
                     if(empty($data_approved)){
                         echo "<tr><td colspan='8'>-- kosong --</td></tr>";
                     } else {
-                        foreach($data_approved as $row) { 
+                        foreach($data_approved as $row) {
                 ?>
                     <form method="post" action="">
                         <tr>
@@ -53,15 +53,27 @@
                             <td><?= $row["penyebab"]; ?></td>
                             <td><?= $row["sumber"]; ?></td>
                             <td>
-                                <?= !empty($row["mitigasi"]) ? $row["mitigasi"] : '<input type="text" name="mitigasi" placeholder="Masukkan Mitigasi">'; ?>
+                                <?php if (!empty($row["mitigasi"])): ?>
+                                    <?= $row["mitigasi"]; ?>
+                                <?php else: ?>
+                                    <input type="text" name="mitigasi" placeholder="Masukkan Mitigasi" 
+                                        value="<?= htmlspecialchars($_POST['mitigasi'] ?? ''); ?>">
+                                <?php endif; ?>
                             </td>
                             <td>
-                                <?= !empty($row["solusi"]) ? $row["solusi"] : '<input type="text" name="solusi" placeholder="Masukkan Solusi">'; ?>
-                            </td>
+                                <?php if (!empty($row["solusi"])): ?>
+                                    <?= $row["solusi"]; ?>
+                                <?php else: ?>
+                                    <input type="text" name="solusi" placeholder="Masukkan Solusi" 
+                                        value="<?= htmlspecialchars($_POST['solusi'] ?? ''); ?>">
+                                <?php endif; ?>
+                            </td>   
                             <td>
                                 <input type="hidden" name="id" value="<?= $row["id"]; ?>">
                             </td>
-                            <td><button type="submit" name="submit">Submit</button></td>
+                            <?php if(empty($row['mitigasi']) || empty($row['solusi'])):?>
+                                <td><button type="submit" name="submit">Submit</button></td>
+                            <?php endif;?>
                         </tr>
                     </form>
                 <?php 
@@ -73,14 +85,21 @@
 </body>
 </html>
 <?php
-if(isset($_POST["submit"])) {
+if (isset($_POST["submit"])) {
     $id = $_POST["id"];
     $mitigasi = $_POST["mitigasi"];
     $solusi = $_POST["solusi"];
-    if($db->tambahMitigasiSolusi($id, $mitigasi, $solusi)) {
-        echo "<script>alert('Mitigasi dan Solusi berhasil ditambahkan!'); document.location.href = 'MitigasiSolusi.php';</script>";
+
+    // Simpan ke database jika kedua nilai diisi
+    if (!empty($mitigasi) && !empty($solusi)) {
+        if ($db->tambahMitigasiSolusi($id, $mitigasi, $solusi)) {
+            echo "<script>alert('Mitigasi dan Solusi berhasil ditambahkan!'); document.location.href = 'MitigasiSolusi.php';</script>";
+        } else {
+            echo "<script>alert('Gagal menambahkan mitigasi dan solusi!');</script>";
+        }
     } else {
-        echo "<script>alert('Gagal menambahkan mitigasi dan solusi!'); document.location.href = 'MitigasiSolusi.php';</script>";
+        // Tampilkan alert jika input tidak lengkap
+        echo "<script>alert('Mohon isi kedua kolom Mitigasi dan Solusi sebelum menyimpan.');</script>";
     }
 }
 ?>
